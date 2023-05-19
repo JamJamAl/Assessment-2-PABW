@@ -74,6 +74,11 @@
           // error
           nameError.text("");
 
+          // Validaso form fields
+          if (pokemonName === "") {
+            nameError.text("Pokemon name is required.");
+            return;
+          }
           $.ajax({
             url: `https://pokeapi.co/api/v2/pokemon/${pokemonName}`,
             type: "GET",
