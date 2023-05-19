@@ -62,5 +62,49 @@
         </thead>
       </table>
     </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#pokemon-form").submit(function (e) {
+          e.preventDefault();
+
+          const pokemonName = $("#pokemon-name").val();
+          const nameError = $("#name-error");
+
+          // error
+          nameError.text("");
+
+          $.ajax({
+            url: `https://pokeapi.co/api/v2/pokemon/${pokemonName}`,
+            type: "GET",
+            success: function (data) {
+              // Build DataTable
+              const tableData = [
+                [
+                  data.name,
+                  data.height,
+                  data.weight,
+                  `<img src="${data.sprites.front_default}" alt="${data.name} image">`,
+                ],
+              ];
+
+              $("#pokemon-table").DataTable({
+                destroy: true,
+                data: tableData,
+                columns: [
+                  { title: "Name" },
+                  { title: "Height" },
+                  { title: "Weight" },
+                  { title: "Image" },
+                ],
+              });
+            },
+            error: function (xhr, status, error) {
+              $("#result-container").html(`<p>Error: ${error}</p>`);
+            },
+          });
+        });
+      });
+    </script>
   </body>
 </html>
